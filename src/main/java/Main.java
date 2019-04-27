@@ -19,5 +19,9 @@ public class Main {
         matrix.show();
         System.out.println("Read directly from matrix: ");
         matrix.show2();
+
+//        Disk disk = new FileDisk();
+//        disk.write("z",3);
+//        System.out.println(disk.read(3));
     }
 }

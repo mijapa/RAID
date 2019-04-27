@@ -20,7 +20,7 @@ public class ArrayDiskTest {
         Disk disk = new ArrayDisk(size);
         //WHEN
         disk.write(input, position);
-        int readed = disk.read(position);
+        int readed = (Integer)disk.read(position);
         //THEN
         assertThat(readed, equalTo(expectedOutput));
     }
@@ -35,6 +35,6 @@ public class ArrayDiskTest {
         Disk disk = new ArrayDisk(size);
         //WHEN
         disk.write(input, position);
-        int readed = disk.read(position);
+        int readed = (Integer)disk.read(position);
     }
 }

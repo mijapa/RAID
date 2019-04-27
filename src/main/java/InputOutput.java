@@ -1,7 +1,7 @@
-public interface InputOutput {
+public interface InputOutput<T> {
 
-    int write(int input, int position);
+    T write(T input, int position);
 
-    int read(int position);
+    T read(int position);
 
 }

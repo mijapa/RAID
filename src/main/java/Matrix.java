@@ -20,9 +20,9 @@ public class Matrix implements InputOutput {
     }
 
     @Override
-    public int write(int position, int input) {
-        int chosenDisk = position % numberOfDisksForData; //means column for table
-        int placeOnDiskForData = position / numberOfDisksForData; //means row for table
+    public Integer write(Object position, int input) {
+        int chosenDisk = (Integer) position % numberOfDisksForData; //means column for table
+        int placeOnDiskForData = (Integer) position / numberOfDisksForData; //means row for table
         int placeParity = placeOnDiskForData % numberOfDisks;
 
         //write real data
@@ -31,7 +31,7 @@ public class Matrix implements InputOutput {
         else
             disks[chosenDisk].write(input, placeOnDiskForData);
         //write parity
-        disks[placeParity].write(parityValue(position), placeOnDiskForData);
+        disks[placeParity].write(parityValue((Integer)position), placeOnDiskForData);
         return 0;
     }
 
@@ -43,7 +43,7 @@ public class Matrix implements InputOutput {
         for (int i = 0; i < numberOfDisks; i++) {
             if (i == placeParity)
                 continue;
-            sum += disks[i].read(placeOnDiskForData);
+            sum += (Integer)disks[i].read(placeOnDiskForData);
         }
         return sum % 2;
     }
@@ -55,9 +55,9 @@ public class Matrix implements InputOutput {
 
     //TODO check this (run Main.java)
     @Override
-    public int read(int position) {
+    public Integer read(int position) {
         int placeOnDisk = position / numberOfDisks;
-        return disks[position % numberOfDisks].read(placeOnDisk);
+        return (Integer)disks[position % numberOfDisks].read(placeOnDisk);
     }
 
     public void show() {
