@@ -8,6 +8,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(JUnitParamsRunner.class)
 public class MatrixTest {
+    //TODO IT'S BUG FOR ME, YOU NEED TO CONSIDER 'PARITY' OR RENAME ARGUMENT, BECAUSE 'POSITION'
+    //HERE AND HERE IS MISLEADING OR CHANGE WRITE() METHOD, BUT I THINK METHOD IS RIGHT /Dominika
     @Test
     @Parameters({
             "0, 0, 0",
@@ -20,8 +22,8 @@ public class MatrixTest {
         //GIVEN
         Matrix matrix = new Matrix(3, 10);
         //WHEN
-        matrix.matrixWrite(position, input);
-        int readed = matrix.matrixRead(position);
+        matrix.write(position, input);
+        int readed = matrix.read(position);
         //THEN
         assertThat(readed, equalTo(expectedOutput));
     }

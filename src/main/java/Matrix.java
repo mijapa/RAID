@@ -1,4 +1,5 @@
-public class Matrix {
+public class Matrix implements InputOutput {
+
     private Disk[] disks;
     private int numberOfDisks;
     private int numberOfDisksForData; // number of disk for real data eg. if you have 4 disks, 1 is always for checksum and 3 for real data
@@ -8,28 +9,30 @@ public class Matrix {
         this.numberOfDisks = numberOfDisks;
         this.sizeOfDisks = sizeOfDisks;
         numberOfDisksForData = numberOfDisks - 1;
-        initialize();
+        initializeDisk();
     }
 
-    public void initialize(){
-        disks = new Disk[numberOfDisks];
+    public void initializeDisk(){
+        disks = new ArrayDisk[numberOfDisks];
         for (int i = 0; i < numberOfDisks; i++) {
-            disks[i] = new Disk(sizeOfDisks);
+            disks[i] = new ArrayDisk(sizeOfDisks);
         }
     }
 
-    public void matrixWrite(int position, int input) {
+    @Override
+    public int write(int position, int input) {
         int chosenDisk = position % numberOfDisksForData; //means column for table
         int placeOnDiskForData = position / numberOfDisksForData; //means row for table
         int placeParity = placeOnDiskForData % numberOfDisks;
 
         //write real data
         if (chosenDisk >= placeParity)
-            disks[chosenDisk + 1].diskWrite(input, placeOnDiskForData);
+            disks[chosenDisk + 1].write(input, placeOnDiskForData);
         else
-            disks[chosenDisk].diskWrite(input, placeOnDiskForData);
+            disks[chosenDisk].write(input, placeOnDiskForData);
         //write parity
-        disks[placeParity].diskWrite(parityValue(position), placeOnDiskForData);
+        disks[placeParity].write(parityValue(position), placeOnDiskForData);
+        return 0;
     }
 
     private int parityValue(int position) {
@@ -40,26 +43,27 @@ public class Matrix {
         for (int i = 0; i < numberOfDisks; i++) {
             if (i == placeParity)
                 continue;
-            sum += disks[i].diskRead(placeOnDiskForData);
+            sum += disks[i].read(placeOnDiskForData);
         }
         return sum % 2;
     }
 
 //    IT'S BUG FOR ME, SHOW2() METHOD SHOWS WHAT IS INSIDE ALL MATRIX, SOLUTION BELOW  /Dominika
-//    public int matrixRead(int position) {
-//        return disks[position % (disks.length - 1)].diskRead(position / (disks.length - 1));
+//    public int read(int position) {
+//        return disks[position % (disks.length - 1)].read(position / (disks.length - 1));
 //    }
 
     //TODO check this (run Main.java)
-    public int matrixRead(int position) {
+    @Override
+    public int read(int position) {
         int placeOnDisk = position / numberOfDisks;
-        return disks[position % numberOfDisks].diskRead(placeOnDisk);
+        return disks[position % numberOfDisks].read(placeOnDisk);
     }
 
     public void show() {
         for (int j = 0; j < sizeOfDisks; j++) {
             for (int i = 0; i < numberOfDisks; i++) {
-                System.out.print(disks[i].diskRead(j) + " ");
+                System.out.print(disks[i].read(j) + " ");
             }
             System.out.println();
         }
@@ -69,7 +73,7 @@ public class Matrix {
     public void show2(){
         for(int i = 0; i < sizeOfDisks * numberOfDisks; i++){
             if(i % numberOfDisks == 0) System.out.println();
-            System.out.print(matrixRead(i) + " ");
+            System.out.print(read(i) + " ");
         }
     }
 

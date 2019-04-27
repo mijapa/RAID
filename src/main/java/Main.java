@@ -3,17 +3,17 @@ public class Main {
     public static void main(String[] args) {
         Matrix matrix = new Matrix(4, 6);
 
-        matrix.matrixWrite(0, 0);
-        matrix.matrixWrite(1, 0);
-        matrix.matrixWrite(2, 5);
-        matrix.matrixWrite(3, 5);
-        matrix.matrixWrite(4, 5);
-        matrix.matrixWrite(5, 0);
-        matrix.matrixWrite(6, 5);
-        matrix.matrixWrite(7, 5);
-        matrix.matrixWrite(8, 5);
-        matrix.matrixWrite(9, 0);
-        matrix.matrixWrite(10, 0);
+        matrix.write(0, 0);
+        matrix.write(1, 0);
+        matrix.write(2, 5);
+        matrix.write(3, 5);
+        matrix.write(4, 5);
+        matrix.write(5, 0);
+        matrix.write(6, 5);
+        matrix.write(7, 5);
+        matrix.write(8, 5);
+        matrix.write(9, 0);
+        matrix.write(10, 0);
 
         System.out.println("Read directly from disk: ");
         matrix.show();
