@@ -20,8 +20,9 @@ public class Main {
         System.out.println("Read directly from matrix: ");
         matrix.show2();
 
-//        Disk disk = new FileDisk();
-//        disk.write("z",3);
-//        System.out.println(disk.read(3));
+        System.out.println();
+        Disk disk = new FileDisk("file.txt");
+        disk.write("z",3);
+        System.out.println(disk.read(3));
     }
 }

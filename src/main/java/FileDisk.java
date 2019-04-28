@@ -4,21 +4,26 @@ public class FileDisk extends Disk {
 
     private File file;
 
-    public FileDisk() {
-        this.file = new File("file.txt");
-        //file.createNewFile(); // if file already exists will do nothing
+    public FileDisk(String path) {
+        this.file = new File(path);
+        createFileIfNotExist();
     }
 
-    //TODO fix this method
+    private void createFileIfNotExist() {
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public Character write(Object input, int position) {
-        byte buffer[];
+        String in = input.toString();
         try(RandomAccessFile raf =  new RandomAccessFile(file, "rw")){
             raf.seek(position);
-            buffer = convertToBytes(input);
-            raf.write(buffer);
+            raf.write(in.getBytes());
             return 0;
-
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -38,11 +43,4 @@ public class FileDisk extends Disk {
         }
     }
 
-    public byte[] convertToBytes(Object object) throws IOException {
-        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
-             ObjectOutput out = new ObjectOutputStream(bos)) {
-            out.writeObject(object);
-            return bos.toByteArray();
-        }
-    }
 }
