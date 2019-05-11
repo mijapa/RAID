@@ -10,15 +10,15 @@ public class ArrayDisk extends Disk{
     }
 
     @Override
-    public Integer write(Object input, int position) {
+    public int write(int input, int position) {
         if (position >= 0 && position < array.length) {
-            array[position] = (Integer)input;
+            array[position] = input;
             return 0;//OK
         } else throw new ArrayIndexOutOfBoundsException();
     }
 
     @Override
-    public Integer read(int position) {
+    public int read(int position) {
         if (position >= 0 && position < array.length)
             return array[position];
         else throw new ArrayIndexOutOfBoundsException();

@@ -1,11 +1,14 @@
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 
 public class FileDisk extends Disk {
 
+    static private int num = 0;
     private File file;
 
-    public FileDisk(String path) {
-        this.file = new File(path);
+    public FileDisk(int size) {
+        this.file = new File(num++ + ".txt");
         createFileIfNotExist();
     }
 
@@ -18,28 +21,26 @@ public class FileDisk extends Disk {
     }
 
     @Override
-    public Character write(Object input, int position) {
-        String in = input.toString();
-        try(RandomAccessFile raf =  new RandomAccessFile(file, "rw")){
+    public int write(int input, int position) {
+        String in = String.valueOf(input);
+        try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
             raf.seek(position);
             raf.write(in.getBytes());
             return 0;
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException();
         }
     }
 
     @Override
-    public Character read(int position) {
+    public int read(int position) {
         byte buffer[] = new byte[1];
-        try(RandomAccessFile raf =  new RandomAccessFile(file, "r")){
+        try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
             raf.seek(position);
             raf.read(buffer);
-            return (char)buffer[0];
+            return (char) buffer[0] - 48;
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException();
         }
     }
 

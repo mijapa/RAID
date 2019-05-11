@@ -12,17 +12,17 @@ public class Matrix implements InputOutput {
         initializeDisk();
     }
 
-    public void initializeDisk(){
-        disks = new ArrayDisk[numberOfDisks];
+    public void initializeDisk() {
+        disks = new FileDisk[numberOfDisks];
         for (int i = 0; i < numberOfDisks; i++) {
-            disks[i] = new ArrayDisk(sizeOfDisks);
+            disks[i] = new FileDisk(sizeOfDisks);
         }
     }
 
     @Override
-    public Integer write(Object position, int input) {
-        int chosenDisk = (Integer) position % numberOfDisksForData; //means column for table
-        int placeOnDiskForData = (Integer) position / numberOfDisksForData; //means row for table
+    public int write(int position, int input) {
+        int chosenDisk = position % numberOfDisksForData; //means column for table
+        int placeOnDiskForData = position / numberOfDisksForData; //means row for table
         int placeParity = placeOnDiskForData % numberOfDisks;
 
         //write real data
@@ -31,7 +31,7 @@ public class Matrix implements InputOutput {
         else
             disks[chosenDisk].write(input, placeOnDiskForData);
         //write parity
-        disks[placeParity].write(parityValue((Integer)position), placeOnDiskForData);
+        disks[placeParity].write(parityValue(position), placeOnDiskForData);
         return 0;
     }
 
@@ -43,21 +43,23 @@ public class Matrix implements InputOutput {
         for (int i = 0; i < numberOfDisks; i++) {
             if (i == placeParity)
                 continue;
-            sum += (Integer)disks[i].read(placeOnDiskForData);
+            sum += disks[i].read(placeOnDiskForData);
         }
         return sum % 2;
     }
 
-//    IT'S BUG FOR ME, SHOW2() METHOD SHOWS WHAT IS INSIDE ALL MATRIX, SOLUTION BELOW  /Dominika
-//    public int read(int position) {
-//        return disks[position % (disks.length - 1)].read(position / (disks.length - 1));
-//    }
-
     //TODO check this (run Main.java)
     @Override
-    public Integer read(int position) {
-        int placeOnDisk = position / numberOfDisks;
-        return (Integer)disks[position % numberOfDisks].read(placeOnDisk);
+    public int read(int position) {
+        int chosenDisk = position % numberOfDisksForData; //means column for table
+        int placeOnDiskForData = position / numberOfDisksForData; //means row for table
+        int placeParity = placeOnDiskForData % numberOfDisks;
+
+        //write real data
+        if (chosenDisk >= placeParity)
+            return disks[chosenDisk + 1].read(placeOnDiskForData);
+        else
+            return disks[chosenDisk].read(placeOnDiskForData);
     }
 
     public void show() {
@@ -70,11 +72,13 @@ public class Matrix implements InputOutput {
         System.out.println();
     }
 
-    public void show2(){
-        for(int i = 0; i < sizeOfDisks * numberOfDisks; i++){
-            if(i % numberOfDisks == 0) System.out.println();
-            System.out.print(read(i) + " ");
+    public int[][] toArray() {
+        int[][] tab = new int[sizeOfDisks][numberOfDisks];
+        for (int j = 0; j < sizeOfDisks; j++) {
+            for (int i = 0; i < numberOfDisks; i++) {
+                tab[j][i] = disks[i].read(j);
+            }
         }
+        return tab;
     }
-
 }
